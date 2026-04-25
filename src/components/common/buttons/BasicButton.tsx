@@ -1,4 +1,4 @@
-import { propsBasicButton } from "@/types/BasicButtonType"
+import { propsBasicButton } from "@/types/basicButtonType"
 
 export default function BasicButton({ onClick, disabled, children, className, type }: propsBasicButton) {
     return (

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import { FilterType } from "@/types/FilterType";
+import { FilterType, PriceValueInterface } from "@/types/filterType";
 import { useIsMobile } from "@/hooks/useMediaQuery";
 import CheckboxInput from "@/components/common/inputs/CheckboxInput";
 import BasicButton from "@/components/common/buttons/BasicButton";
@@ -10,7 +10,7 @@ import BasicButton from "@/components/common/buttons/BasicButton";
 export default function FilterSection({ dataCategories, dataPriceRange, onSelectCategory, onSelectPriceRange }: FilterType) {
     const isMobile = useIsMobile();
     const [selectedCategory, setSelectedCategory] = useState<string>("");
-    const [selectedPriceRange, setSelectedPriceRange] = useState<any>(undefined);
+    const [selectedPriceRange, setSelectedPriceRange] = useState<PriceValueInterface | undefined>(undefined);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const _RenderFilterContentDesktop = () => {

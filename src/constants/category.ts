@@ -1,4 +1,4 @@
-import { CategoryInterface } from "@/types/FilterType";
+import { CategoryInterface } from "@/types/filterType";
 
 export const CATEGORY_LIST: CategoryInterface[] = [
     {

@@ -2,7 +2,7 @@ export type FilterType = {
     dataCategories: CategoryInterface[]
     dataPriceRange: PriceRangeInterface[]
     onSelectCategory: (value: string) => void
-    onSelectPriceRange: (value: any) => void
+    onSelectPriceRange: (value: PriceValueInterface | undefined) => void
 }
 
 export interface CategoryInterface {
@@ -10,7 +10,12 @@ export interface CategoryInterface {
     value: string;
 }
 
+export interface PriceValueInterface {
+    min: number;
+    max: number;
+}
+
 export interface PriceRangeInterface {
     label: string;
-    value: any;
+    value: PriceValueInterface;
 }

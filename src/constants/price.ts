@@ -1,4 +1,4 @@
-import { PriceRangeInterface } from "@/types/FilterType";
+import { PriceRangeInterface } from "@/types/filterType";
 
 export const PRICE_RANGE_LIST: PriceRangeInterface[] = [
     {

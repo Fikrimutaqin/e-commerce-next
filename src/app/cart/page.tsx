@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { addToCart, removeFromCart, clearCart } from "@/store/slices/cartSlice";
+import { addToCart, removeFromCart, clearCart, CartItem } from "@/store/slices/cartSlice";
 import BasicButton from "@/components/common/buttons/BasicButton";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
@@ -13,11 +13,11 @@ export default function CartPage() {
     const router = useRouter();
     const { items, totalAmount, totalQuantity } = useAppSelector((state) => state.cart);
 
-    const handleIncrease = (item: any) => {
+    const handleIncrease = (item: CartItem) => {
         dispatch(addToCart({ product: item, quantity: 1 }));
     };
 
-    const handleDecrease = (item: any) => {
+    const handleDecrease = (item: CartItem) => {
         if (item.quantity > 1) {
             dispatch(addToCart({ product: item, quantity: -1 }));
         } else {
@@ -38,7 +38,7 @@ export default function CartPage() {
                 </div>
                 <h1 className="text-3xl font-bold text-black mb-2">Your cart is empty</h1>
                 <p className="text-secondary mb-8 text-center max-w-md">
-                    Looks like you haven't added anything to your cart yet. Explore our premium collection and find something you love.
+                    Looks like you haven&apos;t added anything to your cart yet. Explore our premium collection and find something you love.
                 </p>
                 <Link href="/">
                     <BasicButton onClick={() => { console.log("hellow") }} type="button" className="w-[240px] h-14 bg-primary text-white! font-bold rounded-xl shadow-lg shadow-primary/20">

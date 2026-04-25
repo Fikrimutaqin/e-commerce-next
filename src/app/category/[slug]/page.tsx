@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useMemo } from "react";
@@ -26,7 +27,7 @@ export default function CategoryPage() {
     // Logic Sorting
     const sortedProducts = useMemo(() => {
         if (!products) return [];
-        let result = [...products];
+        const result = [...products];
 
         if (sortBy === "low-to-high") {
             result.sort((a, b) => a.price - b.price);
@@ -42,7 +43,7 @@ export default function CategoryPage() {
             <section className="w-full bg-slate-50 py-12 px-4 lg:px-[215px]">
                 <div className="flex flex-col gap-y-2">
                     <nav className="flex flex-row items-center gap-x-2 text-xs text-secondary font-medium uppercase tracking-widest">
-                        <a href="/" className="hover:text-primary transition-colors">Home</a>
+                        <Link href="/" className="hover:text-primary transition-colors">Home</Link>
                         <span>/</span>
                         <span className="text-black font-bold">Category</span>
                         <span>/</span>

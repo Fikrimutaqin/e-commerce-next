@@ -14,7 +14,12 @@ const eslintConfig = defineConfig([
       "check-file/folder-naming-convention": [
         "error",
         {
-          "src/**/": "KEBAB_CASE",
+          "src/components/**/": "KEBAB_CASE",
+          "src/store/**/": "KEBAB_CASE",
+          "src/hooks/**/": "KEBAB_CASE",
+          "src/services/**/": "KEBAB_CASE",
+          "src/types/**/": "KEBAB_CASE",
+          "src/utils/**/": "KEBAB_CASE",
         },
       ],
       "check-file/filename-naming-convention": [
@@ -32,11 +37,11 @@ const eslintConfig = defineConfig([
           "ignoreMiddleExtensions": true,
         },
       ],
+      "@typescript-eslint/no-explicit-any": "error",
+      "react-hooks/exhaustive-deps": "warn",
     },
   },
-  // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",

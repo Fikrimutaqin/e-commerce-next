@@ -1,4 +1,4 @@
-import { CheckboxType } from "@/types/CheckboxType";
+import { CheckboxType } from "@/types/checkboxType";
 
 export default function CheckboxInput({ onChange, disabled, value, checked, label }: CheckboxType) {
     return (

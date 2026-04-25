@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useState, useMemo } from "react";
 import BasicButton from "@/components/common/buttons/BasicButton";
 import ProductSection from "@/components/sections/product-section/ProductSection";
-import { useIsMobile } from "@/hooks/useMediaQuery";
 import { useAppDispatch } from "@/store/hooks";
 import { addToCart } from "@/store/slices/cartSlice";
 import { useMutation } from "@tanstack/react-query";
@@ -17,7 +16,6 @@ export default function ProductDetailPage() {
     const { id } = useParams();
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const isMobile = useIsMobile();
     const [quantity, setQuantity] = useState(1);
     const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
     const [activeImageIndex, setActiveImageIndex] = useState(0);

@@ -197,7 +197,7 @@ export default function ProductSection({
                                 <button
                                     onClick={() => {
                                         setOpenSort(false);
-                                        onSort && onSort("low-to-high");
+                                        onSort?.("low-to-high");
                                     }}
                                     className={`w-full text-left px-4 py-2 text-sm border-none cursor-pointer ${valueSort === "low-to-high" ? "bg-primary text-white!" : "text-black"}`}
                                 >
@@ -206,7 +206,7 @@ export default function ProductSection({
                                 <button
                                     onClick={() => {
                                         setOpenSort(false);
-                                        onSort && onSort("high-to-low");
+                                        onSort?.("high-to-low");
                                     }}
                                     className={`w-full text-left px-4 py-2 text-sm border-none cursor-pointer ${valueSort === "high-to-low" ? "bg-primary text-white!" : "text-black"}`}
                                 >
@@ -269,7 +269,7 @@ export default function ProductSection({
             </div>
             {products && products.length < 20 && !id && (
                 <BasicButton
-                    onClick={() => { onLoadMore && onLoadMore() }}
+                    onClick={() => onLoadMore?.()}
                     type="button"
                     className="h-12 bg-transparent cursor-pointer border-primary border-2 text-black! font-semibold text-base rounded-lg w-[200px]! mx-auto disabled:opacity-50"
                     disabled={isFetching}

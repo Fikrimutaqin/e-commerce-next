@@ -31,7 +31,7 @@ export const productService = {
     return response.data;
   },
 
-  addToCartApi: async (userId: number, products: { productId: number; quantity: number }[]): Promise<any> => {
+  addToCartApi: async (userId: number, products: { productId: number; quantity: number }[]): Promise<unknown> => {
     const response = await axiosInstance.post("/carts", {
       userId,
       products,

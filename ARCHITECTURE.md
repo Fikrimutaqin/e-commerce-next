@@ -1,70 +1,93 @@
-# Dokumentasi Arsitektur Proyek
+# Architecture - Tjermin Marketplace
 
-Dokumen ini menjelaskan struktur folder dan pola arsitektur yang digunakan dalam proyek Next.js ini. Proyek ini dibangun dengan fokus pada skalabilitas, modularitas, dan keamanan tipe (type-safety).
+Tjermin Marketplace is a high-end, premium e-commerce platform built with modern web technologies. This document outlines the technical architecture, state management patterns, and project structure.
 
-## 🚀 Teknologi Utama
+## 🚀 Tech Stack
 
-- **Framework**: [Next.js 15+ (App Router)](https://nextjs.org/)
-- **State Management**: [Redux Toolkit](https://redux-toolkit.js.org/)
-- **Bahasa**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Framework**: [Next.js 15+](https://nextjs.org/) (App Router)
+- **State Management**: 
+  - [Redux Toolkit](https://redux-toolkit.js.org/) (Global UI State & Shopping Cart)
+  - [Redux Persist](https://github.com/rt2zz/redux-persist) (Local Storage Persistence)
+  - [TanStack Query v5](https://tanstack.com/query/latest) (Server State & API Caching)
+- **Styling**: 
+  - [Tailwind CSS](https://tailwindcss.com/) (Utility-first CSS)
+  - [Vanilla CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) (Custom animations & complex layouts)
+- **HTTP Client**: [Axios](https://axios-http.com/)
+- **Data Source**: [FakeStoreAPI](https://fakestoreapi.com/)
+- **Notifications**: [React Hot Toast](https://react-hot-toast.com/)
 
 ---
 
-## 📁 Struktur Folder Modular
+## 📂 Project Structure
 
-Struktur folder diatur agar kode mudah ditemukan, diuji, dan dikelola seiring berkembangnya aplikasi.
+The project follows a modular and clean architecture:
 
 ```text
 src/
-├── app/                # Direktori Utama Next.js (Routing & Layout)
-│   ├── favicon.ico
-│   ├── globals.css     # Style global
-│   ├── layout.tsx      # Root Layout (Tempat StoreProvider berada)
-│   └── page.tsx        # Halaman Utama (Landing Page)
-├── components/         # Komponen UI Reusable
-│   ├── common/         # Komponen kecil/atom (Buttons, Input, dll)
-│   └── layout/         # Komponen struktur besar (Header, Footer, Sidebar)
-├── hooks/              # Custom React Hooks
-├── services/           # Logika integrasi API (e.g. Axios, Fetch)
-├── store/              # Konfigurasi State Management (Redux)
-│   ├── slices/         # Redux Slices (Logika bisnis per modul)
-│   ├── hooks.ts        # Typed hooks (useAppSelector, useAppDispatch)
-│   ├── store.ts        # Konfigurasi utama Store
-│   └── StoreProvider.tsx # Wrapper untuk menghubungkan Redux ke App Router
-├── types/              # Definisi interface dan tipe TypeScript
-├── utils/              # Fungsi pembantu (helper functions / formatters)
-└── styles/             # (Opsional) Token CSS atau tema tambahan
+├── app/                  # Next.js App Router (Pages & Routes)
+├── components/           # UI Components
+│   ├── common/           # Reusable Atomic Components (Buttons, Inputs, Cards)
+│   ├── layout/           # Global Layout Elements (Header, Footer)
+│   └── sections/         # Feature-specific Page Sections (Hero, Product Grid, Filters)
+├── constants/            # Static Data, Menu Configurations, and Labels
+├── hooks/                # Custom React Hooks (useMediaQuery, useProductFilters)
+├── lib/                  # Library configurations (Axios instance)
+├── providers/            # React Context Providers (QueryProvider, ReduxProvider)
+├── services/             # API Service Layer (productService)
+├── store/                # Redux Toolkit Slices & Store Configuration
+└── types/                # TypeScript Interfaces & Types
 ```
 
 ---
 
-## ⚛️ Implementasi Redux
+## 🧠 State Management Strategy
 
-Kami menggunakan **Redux Toolkit (RTK)** dengan pola yang direkomendasikan untuk Next.js App Router:
+We use a hybrid approach to manage state efficiently:
 
-### 1. Store Configuration (`src/store/store.ts`)
-Menggunakan fungsi `makeStore` untuk memastikan store baru dibuat untuk setiap request jika diperlukan (terutama penting untuk SSR/Streaming).
+### 1. Server State (TanStack Query)
+Handles all asynchronous data fetching, caching, and background synchronization.
+- **Key usage**: Fetching products, category lists, and search suggestions.
+- **Benefits**: Automatic re-fetching, loading states, and reduced API calls via caching.
 
-### 2. Typed Hooks (`src/store/hooks.ts`)
-Kami menyediakan `useAppDispatch` and `useAppSelector` yang sudah memiliki tipe data (`TypeScript`), sehingga Anda mendapatkan *autocomplete* dan deteksi error saat mengakses state.
-
-### 3. Store Provider (`src/store/StoreProvider.tsx`)
-Komponen Client yang membungkus aplikasi. Menggunakan `useState` untuk inisialisasi store satu kali saja di sisi client agar state tidak tereset saat re-render.
-
----
-
-## 🛠️ Cara Menambah Fitur Baru
-
-Untuk menambahkan state baru:
-1. Buat file slice baru di `src/store/slices/namaSlice.ts`.
-2. Daftarkan reducer tersebut di `src/store/store.ts`.
-3. Gunakan state di komponen dengan `useAppSelector`.
-4. Ubah state dengan `dispatch(action())` menggunakan `useAppDispatch`.
+### 2. Client State (Redux Toolkit)
+Handles global UI states and persistent data.
+- **App Slice**: Global search query and initialization state.
+- **Cart Slice**: Shopping cart items, quantities, and totals. Persisted to `localStorage` via `redux-persist`.
+- **Price/Category Slices**: Temporary filtering states derived from API data.
 
 ---
 
-## 📝 Catatan Tambahan
-- Selalu gunakan **TypeScript** untuk setiap komponen dan fungsi baru.
-- Pisahkan logika bisnis (di dalam *slice* atau *services*) dari tampilan (komponen UI).
-- Gunakan direktori `common` untuk komponen yang bisa digunakan kembali di berbagai halaman.
+## 🛠 Key Features Implementation
+
+### Global Search & Suggestions
+- **Logic**: Real-time filtering on the Home page combined with an autocomplete dropdown in the Header.
+- **Navigation**: Search results use `useQuery` to fetch suggestions and provide direct links to product detail pages.
+
+### Product Filtering System
+- **Categories**: Dynamic category generation based on available products.
+- **Price Range**: Advanced range filtering (Min-Max) calculated dynamically from the product dataset.
+- **Sorting**: Multi-criteria sorting (Price High-Low / Low-High).
+
+### Shopping Cart
+- **Persistence**: Cart items survive page refreshes.
+- **Optimistic UI**: Quantity updates and removals reflect instantly in the UI.
+
+### Responsive Design
+- Custom breakpoints and a mobile-first approach.
+- Optimized layouts for Grid (2/3 columns) and List views.
+
+---
+
+## ⚡ Performance Optimizations
+
+- **Image Optimization**: Utilizing Next.js `next/image` for automatic resizing, lazy loading, and WebP support.
+- **Code Splitting**: Native Next.js dynamic routing.
+- **Memoization**: Using `useMemo` for complex filtering calculations to prevent unnecessary re-renders.
+
+---
+
+## 🤝 Contribution Guidelines
+
+1. **Naming Convention**: Use PascalCase for components and camelCase for hooks/utilities.
+2. **Atomic Design**: Keep components small and focused.
+3. **Type Safety**: Always define TypeScript interfaces for new data structures.

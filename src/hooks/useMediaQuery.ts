@@ -1,33 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
 /**
  * Hook untuk mendeteksi apakah ukuran layar sesuai dengan query tertentu.
- * Default menggunakan 1024px (breakpoint lg di Tailwind).
+ * Menggunakan useSyncExternalStore untuk sinkronisasi yang aman dengan browser API.
  */
 export const useMediaQuery = (query: string = "(max-width: 1024px)") => {
-  const [matches, setMatches] = useState<boolean>(false);
+  const subscribe = (callback: () => void) => {
+    if (typeof window === "undefined") return () => {};
+    
+    const media = window.matchMedia(query);
+    media.addEventListener("change", callback);
+    return () => media.removeEventListener("change", callback);
+  };
 
-  useEffect(() => {
-    // Pastikan window tersedia (mencegah error saat SSR)
-    if (typeof window !== "undefined") {
-      const media = window.matchMedia(query);
-      
-      // Set initial value
-      if (media.matches !== matches) {
-        setMatches(media.matches);
-      }
+  const getSnapshot = () => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(query).matches;
+  };
 
-      // Listener untuk perubahan ukuran layar
-      const listener = () => setMatches(media.matches);
-      media.addEventListener("change", listener);
+  const getServerSnapshot = () => false;
 
-      return () => media.removeEventListener("change", listener);
-    }
-  }, [matches, query]);
-
-  return matches;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };
 
 /**

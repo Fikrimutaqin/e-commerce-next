@@ -31,7 +31,7 @@ export const makeStore = () => {
   });
 };
 
-export const persistor = (store: any) => persistStore(store);
+export const persistor = (store: AppStore) => persistStore(store);
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>;

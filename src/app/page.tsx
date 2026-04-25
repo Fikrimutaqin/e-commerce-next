@@ -1,5 +1,6 @@
 "use client";
-import { useState, useMemo, useEffect } from "react";
+
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import HeroSection from "@/components/sections/hero-section/HeroSection";
@@ -10,6 +11,7 @@ import { productService } from "@/services/productService";
 import { useAppSelector } from "@/store/hooks";
 import { useProductFilters } from "@/hooks/useProductFilters";
 import NewsletterSection from "@/components/sections/newsletter-section/NewsletterSection";
+import { PriceValueInterface } from "@/types/filterType";
 
 export default function Home() {
   // Get data from Redux Store
@@ -19,7 +21,7 @@ export default function Home() {
 
   const [limit, setLimit] = useState(9);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedPriceRange, setSelectedPriceRange] = useState<any>(undefined);
+  const [selectedPriceRange, setSelectedPriceRange] = useState<PriceValueInterface | undefined>(undefined);
   const [sortBy, setSortBy] = useState("");
 
   const { data: products, isLoading, isError, error, isFetching } = useQuery({
@@ -35,7 +37,7 @@ export default function Home() {
   const filteredProducts = useMemo(() => {
     if (!products) return [];
 
-    let result = products.filter((product) => {
+    const result = products.filter((product) => {
       const matchCategory = selectedCategory === "" || product.category === selectedCategory;
       const matchPrice = !selectedPriceRange || (product.price >= selectedPriceRange.min && product.price <= selectedPriceRange.max);
       const matchSearch = searchQuery === "" || product.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -51,7 +53,7 @@ export default function Home() {
     }
 
     return result;
-  }, [products, selectedCategory, selectedPriceRange, sortBy]);
+  }, [products, selectedCategory, selectedPriceRange, sortBy, searchQuery]);
 
   // Use custom hook to handle filter logic
   useProductFilters(products);

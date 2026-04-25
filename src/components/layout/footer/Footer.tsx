@@ -1,7 +1,6 @@
 import { HEADER_MENU, FOOTER_MENU_SOSMED } from "@/constants/menu";
 import Image from "next/image";
 import Link from "next/link";
-import NewsletterSection from "@/components/sections/newsletter-section/NewsletterSection";
 
 export default function Footer() {
   return (

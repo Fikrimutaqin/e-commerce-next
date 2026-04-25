@@ -1,4 +1,4 @@
-import { propsEmailInput } from "@/types/EmailType";
+import { propsEmailInput } from "@/types/emailType";
 
 export default function EmailInput({ onChange, placeholder, disabled, value }: propsEmailInput) {
     return (
