@@ -1,32 +1,24 @@
 import { PriceRangeInterface } from "@/types/filterType";
 
-export const PRICE_RANGE_LIST: PriceRangeInterface[] = [
+export const PRICE_RANGE: PriceRangeInterface[] = [
     {
         label: "All Price",
-        value: 0
+        value: { min: 0, max: 100000000 }
     },
     {
-        label: "Rp 0 - Rp 100.000",
-        value: 100000
+        label: "$0 - $100",
+        value: { min: 0, max: 100 }
     },
     {
-        label: "Rp 100.000 - Rp 500.000",
-        value: 500000
+        label: "$101 - $500",
+        value: { min: 101, max: 500 }
     },
     {
-        label: "Rp 500.000 - Rp 1.000.000",
-        value: 1000000
+        label: "$501 - $1000",
+        value: { min: 501, max: 1000 }
     },
     {
-        label: "Rp 1.000.000 - Rp 5.000.000",
-        value: 5000000
-    },
-    {
-        label: "Rp 5.000.000 - Rp 10.000.000",
-        value: 10000000
-    },
-    {
-        label: "Rp 10.000.000+",
-        value: 10000001
+        label: "> $1000",
+        value: { min: 1001, max: 100000000 }
     }
 ];

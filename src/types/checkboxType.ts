@@ -1,7 +1,8 @@
 export type CheckboxType = {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
-    value?: string | number | Record<string, unknown>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    value?: any; 
     checked?: boolean;
     label?: string;
 }
