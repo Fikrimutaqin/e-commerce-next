@@ -1,12 +1,14 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://fakestoreapi.com',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+console.log(process.env.NEXT_PUBLIC_API_URL);
 
 // Response Interceptor
 axiosInstance.interceptors.response.use(
